@@ -142,3 +142,60 @@ Running migrations:
 ```
 
 完美成功了！！！所以说有时候书写位置很重要，在上一个模型未创建的时候一定不要去引用它，以免引起不必要的错误！
+
+
+
+在虚拟环境中使用 `requirements.txt`
+
+```
+pip freeze > requirements.txt
+```
+
+安装货升级包后，一定要更新这个文件！！！
+
+
+
+在部署的时候使用这个可以一键安装包依赖
+
+```
+pip install -r requirements.txt
+```
+
+
+
+#### 问题3  安装xadmin过程中出现的问题
+
+推荐查看[官方文档安装方法](https://xadmin.readthedocs.io/en/latest/quickstart.html)
+
+[问题解决方法集锦](http://www.lybbn.cn/data/bbsdatas.php?lybbs=50) 基本上包含了所有遇到的安装问题 
+
+
+
+#### 查找和替换技巧
+
+使用command+f 进行字符串查找，如果需要把查找的字符串替换为另一个字符串，使用command+r  然后选择replace all 就OK了
+
+
+
+#### 问题4 打开指定页面的时候提示`raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)django.template.exceptions.TemplateDoesNotExist: index.html`
+
+这个原因是因为模版没有找到，意思就是没有一个正确的路径进行模版渲染，所以这里需要在setting.py中进行模版路径指定
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],# 添加这句话就OK了
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
