@@ -199,3 +199,50 @@ TEMPLATES = [
 ]
 ```
 
+
+
+#### 问题5 在进行app申明时报错  
+
+```python
+  File "/Users/bene/Desktop/onlineEducation/onlineEducation/apps/operation/models.py", line 4, in <module>
+    from users.models import UserProfile
+  File "/Users/bene/Desktop/onlineEducation/onlineEducation/apps/users/models.py", line 8, in <module>
+    class UserProfile(AbstractUser):
+  File "/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/django/db/models/base.py", line 108, in __new__
+    "INSTALLED_APPS." % (module, name)
+RuntimeError: Model class users.models.UserProfile doesn't declare an explicit app_label and isn't in an application in INSTALLED_APPS.
+Performing system checks...
+
+```
+
+提示很明确，在使用`users.models import UserProfile`等这样的方法是 找不到users的申明，需要去INSTALLED_APPS处修改apps申明,因为我这里是把所有的app放在了一个apps的目录下，所以我这里的修改方案是
+
+1. settings.py处申明
+
+   ```python
+    sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+       
+       
+    INSTALLED_APPS= ['apps.users',  # 用户
+    'apps.course',  # 课程
+    'apps.organization',  # 机构
+    'apps.operation',  # 提问
+    ]
+   ```
+
+2. apps.py修改名称
+
+   ```python
+   class UsersConfig(AppConfig):
+       name = 'apps.users'
+       verbose_name = "用户"
+   ```
+
+3. 在所有引用的地方这样去导入文件
+
+   ```python
+   from apps.users.models import UserProfile
+   from apps.users.forms import LoginForm
+   ```
+
+   重新编译一下就好了！！

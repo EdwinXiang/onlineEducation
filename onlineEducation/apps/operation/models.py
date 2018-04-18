@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
-from course.models import Course
-from users.models import UserProfile
+from apps.course.models import Course
+from apps.users.models import UserProfile
 
 # Create your models here.
 # 总共五张表
