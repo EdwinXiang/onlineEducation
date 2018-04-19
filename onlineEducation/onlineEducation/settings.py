@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'apps.course',  # 课程
     'apps.organization',  # 机构
     'apps.operation',  # 提问
+    'captcha', # 验证码
 
 ]
 
@@ -151,3 +152,11 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
+
+# 邮箱验证码相关设置
+EMAIL_HOST = "smtp.qq.com"  # SMTP服务器主机
+EMAIL_PORT = 25             # 端口
+EMAIL_HOST_USER = "306229443@qq.com"       # 邮箱地址
+EMAIL_HOST_PASSWORD = "dzcwrtvxxukibjfa"    # 密码
+EMAIL_USE_TLS= True
+EMAIL_FROM = "306229443@qq.com"            # 邮箱地址

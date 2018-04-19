@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.views.generic import TemplateView
-from django.urls import path
-from apps.users.views import LoginView
+from django.urls import path,include,re_path
+from apps.users.views import LoginView,RegisterView,ActiveUserView
+
 import xadmin
 xadmin.autodiscover()
 
@@ -25,9 +26,11 @@ from xadmin.plugins import xversion
 xversion.register_models()
 
 urlpatterns = [
-    path('xadmin/', xadmin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html'),name='index'),
-    # path('login/', TemplateView.as_view(template_name='login.html'),name='login'),
-    # path('login/', views.user_login, name='login')
-    path('login/', LoginView.as_view(), name = 'login'),
+    path('xadmin/', xadmin.site.urls), # 后台管理地址
+    path('', TemplateView.as_view(template_name='index.html'),name='index'), # 首页地址
+    path('login/', LoginView.as_view(), name = 'login'), # 登录地址
+    path('register/', RegisterView.as_view(), name='register'), # 注册地址
+    path('captcha/', include('captcha.urls')), # 验证码地址
+    path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),
+
 ]
