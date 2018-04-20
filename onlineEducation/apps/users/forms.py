@@ -17,3 +17,16 @@ class RegisterForm(forms.Form):
     captcha = CaptchaField(error_messages={"invalid":"验证码错误"})
 
 
+# 忘记密码表单
+class ForgetPwdForm(forms.Form):
+    '''忘记密码'''
+    email = forms.EmailField(required=True)
+    captcha = CaptchaField(error_messages={'invalid':"验证码错误"})
+
+
+
+# 修改密码表单
+class ModifyPwdForm(forms.Form):
+    '''修改密码'''
+    password1 = forms.CharField(required=True, min_length=5)
+    password2 = forms.CharField(required=True, min_length=5)
