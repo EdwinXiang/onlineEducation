@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.urls import path,include,re_path
 from apps.users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ModifyPwdView
-
+from apps.organization.views import OrgView
+from django.views.static import serve
+from onlineEducation.settings import MEDIA_ROOT
 import xadmin
 xadmin.autodiscover()
 
@@ -34,4 +36,7 @@ urlpatterns = [
     path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),
     re_path('reset/(?P<active_code>.*)/', ForgetPwdView.as_view(), name='reset_pwd'),
     path('modify_pwd/', ModifyPwdView.as_view(), name='modify_pwd'),
+    # 机构列表相关接口
+    path('org_list/', OrgView.as_view(), name = 'org_list'),
+    re_path(r'^media/(?P<path>.*)',serve, {'document_root':MEDIA_ROOT})
 ]
