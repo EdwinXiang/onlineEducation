@@ -5,19 +5,28 @@ from datetime import datetime
 # 三张表 课程机构基本信息、教师基本信息、城市信息
 
 class CityDict(models.Model):
-    name = models.CharField('城市',max_length=20)
-    desc = models.CharField('描述',max_length=200)
+    name = models.CharField('城市', max_length=20)
+    desc = models.CharField('描述', max_length=200)
     add_time = models.DateTimeField(default=datetime.now)
 
     class Meta:
         verbose_name = '城市'
-        verbose_name_plural= verbose_name
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 
 class CourseOrg(models.Model):
+    ORG_CHOICE = (
+        ('pxjg', u'培训机构'),
+        ('gx', u'高校'),
+        ('gr', u'个人'),
+    )
     name = models.CharField("机构名称",max_length=50)
     desc = models.TextField("机构描述")
+    category = models.CharField(max_length=20, choices=ORG_CHOICE, verbose_name=u"机构类别", default="pxjg")
     click_nums = models.IntegerField("点击数",default=0)
     fav_nums = models.IntegerField("收藏数",default=0)
     image = models.ImageField("封面图",upload_to="org/%Y%m",max_length=100)
@@ -29,6 +38,8 @@ class CourseOrg(models.Model):
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.name
 
 
 

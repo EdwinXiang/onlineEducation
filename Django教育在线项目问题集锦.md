@@ -246,3 +246,53 @@ Performing system checks...
    ```
 
    重新编译一下就好了！！
+
+
+
+#### 问题6 在xadmin后台进行数据添加的时候报错
+
+```python
+IndexError at /xadmin/organization/courseorg/add/
+list index out of range
+Request Method:	GET
+Request URL:	http://127.0.0.1:8000/xadmin/organization/courseorg/add/
+Django Version:	2.0.2
+Exception Type:	IndexError
+Exception Value:	
+list index out of range
+Exception Location:	/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/xadmin-2.0.1-py3.6.egg/xadmin/widgets.py in render, line 80
+Python Executable:	/Users/bene/Desktop/xadminDjangoEnv/bin/python
+Python Version:	3.6.3
+Python Path:	
+['/Users/bene/Desktop/onlineEducation/onlineEducation/apps',
+ '/Users/bene/Desktop/onlineEducation/onlineEducation',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python36.zip',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/lib-dynload',
+ '/Users/bene/anaconda3/lib/python3.6',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/XlsxWriter-1.0.4-py3.6.egg',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/xadmin-2.0.1-py3.6.egg',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf',
+ '/Users/bene/Desktop/xadminDjangoEnv/lib/python3.6/site-packages/odf']
+Server time:	星期二, 24 四月 2018 23:56:09 +0800
+```
+
+可以看到问题已经定位到widgets.py 第80行代码处，第80行的源码为
+
+```python
+input_html = [ht for ht in super(AdminSplitDateTime, self).render(name, value, attrs).split('\n') if ht != '']
+        # return input_html
+        return mark_safe('<div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>%s'
+                         '<span class="input-group-btn"><button class="btn btn-default" type="button">%s</button></span></div>'
+                         '<div class="input-group time bootstrap-clockpicker"><span class="input-group-addon"><i class="fa fa-clock-o">'
+                         '</i></span>%s<span class="input-group-btn"><button class=
+```
+
+对标签进行拆分的时候使用了`\n`，这个导致了`out of index range`，说明这种方式拆分是有问题的，在网上找了一下解决方法，直接替换`\n`为`／><`，再运行就正常了。

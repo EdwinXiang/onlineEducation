@@ -79,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 添加t图片处理器，为了在课程列表z中前面添加medie——url
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -152,6 +154,10 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
+
+# 设置上传文件的路径
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')   #指定根目录
 
 # 邮箱验证码相关设置
 EMAIL_HOST = "smtp.qq.com"  # SMTP服务器主机
