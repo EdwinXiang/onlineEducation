@@ -1,5 +1,6 @@
-from django.db import models
 from datetime import datetime
+from django.db import models
+
 
 # Create your models here.
 # 三张表 课程机构基本信息、教师基本信息、城市信息
@@ -7,7 +8,7 @@ from datetime import datetime
 class CityDict(models.Model):
     name = models.CharField('城市', max_length=20)
     desc = models.CharField('描述', max_length=200)
-    add_time = models.DateTimeField(default=datetime.now)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = '城市'
@@ -32,7 +33,7 @@ class CourseOrg(models.Model):
     image = models.ImageField("封面图",upload_to="org/%Y%m",max_length=100)
     address = models.CharField("机构地址",max_length=150)
     city = models.ForeignKey(CityDict, verbose_name='所在城市', on_delete=models.CASCADE)
-    add_time = models.DateTimeField(default=datetime.now)
+    add_time = models.DateTimeField("添加时间", default=datetime.now)
 
     class Meta:
         verbose_name = '课程机构'

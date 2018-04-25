@@ -295,4 +295,15 @@ input_html = [ht for ht in super(AdminSplitDateTime, self).render(name, value, a
                          '</i></span>%s<span class="input-group-btn"><button class=
 ```
 
-对标签进行拆分的时候使用了`\n`，这个导致了`out of index range`，说明这种方式拆分是有问题的，在网上找了一下解决方法，直接替换`\n`为`／><`，再运行就正常了。
+对标签进行拆分的时候使用了`\n`，这个导致了`out of index range`，说明这种方式拆分是有问题的，在网上找了一下解决方法，把split那行代码修改为如下
+
+```python
+#修改前
+input_html = [ht for ht in super(AdminSplitDateTime, self).render(name, value, attrs).split('\n') if ht != '']
+#修改后
+input_html = [ht for ht in super(AdminSplitDateTime, self).render(name, value, attrs).split('/><') if ht != '']
+input_html[0] = input_html[0] + "/>"
+input_html[1] = "<" + input_html[1]
+```
+
+再运行就可以了！！！
